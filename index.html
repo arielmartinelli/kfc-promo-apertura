@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="¡Gran Apertura! DuoBox Recargado al 50% OFF 🍗">
+    <meta property="og:description" content="Promoción exclusiva de tiempo limitado. Hacé clic para canjear tu cupón de bienvenida en KFC.">
+    <meta property="og:image" content="https://www.kfc.com.ar/images/menues/1682022167DuoBox%20Recargado.jpg">
+    <meta property="og:url" content="https://kfc-promo-apertura.vercel.app">
+    <meta name="theme-color" content="#E4002B">
+
+    <title>KFC | Promo Apertura 50% OFF</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --kfc-red: #E4002B;
+            --kfc-dark: #202020;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* --- Z-INDEX PARA QUE LA ALERTA FUNCIONE SIEMPRE --- */
+        div:where(.swal2-container) {
+            z-index: 20000 !important;
+        }
+
+        /* --- SECCIÓN 1: EL ENGAÑO (PROMO) --- */
+        #fake-promo {
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .brand-logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            color: var(--kfc-dark);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+        
+        .brand-logo span { color: var(--kfc-red); }
+
+        .promo-card {
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .promo-img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(228, 0, 43, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .btn-kfc {
+            background-color: var(--kfc-red);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(228, 0, 43, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-kfc:active { transform: scale(0.95); }
+
+        /* --- SECCIÓN 2: LA VERDAD (DISCULPA INTERACTIVA) --- */
+        #real-content {
+            display: none;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .apology-step {
+            display: none; /* Ocultos por defecto */
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .apology-step.active {
+            display: block;
+        }
+
+        .emoji-icon { font-size: 4rem; margin-bottom: 20px; display: block; }
+        
+        h2 { font-family: 'Oswald', sans-serif; color: var(--kfc-dark); font-size: 2rem; margin-bottom: 1.5rem; }
+        p { color: #555; line-height: 1.6; font-size: 1.2rem; margin-bottom: 2rem; }
+
+        .btn-next {
+            background-color: var(--kfc-red);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-next:hover { background-color: #c40025; }
+        
+        .btn-forgive {
+            background-color: #28a745; /* Verde para sí */
+        }
+        .btn-not-yet {
+            background-color: #dc3545; /* Rojo para no */
+            margin-left: 10px;
+        }
+
+        /* --- SECCIÓN 3: FINAL (DELIVERY) --- */
+        #final-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--kfc-red);
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 20001; /* Por encima de todo */
+        }
+        
+        #final-screen h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        #final-screen p {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="fake-promo">
+        <div class="brand-logo">KFC <span>PROMO</span></div>
+        <div class="promo-card">
+            <img src="https://www.kfc.com.ar/images/menues/1682022167DuoBox%20Recargado.jpg" alt="KFC DuoBox" class="promo-img">
+            <h1 class="h3 fw-bold mb-3">¡Felicidades! 🎉</h1>
+            <p class="text-muted mb-4">Tenés un <strong>50% OFF</strong> en el nuevo DuoBox Recargado.</p>
+            <button class="btn btn-kfc" id="btn-claim">CANJEAR AHORA</button>
+            <p class="mt-3 small text-muted">Oferta por tiempo limitado.</p>
+        </div>
+    </div>
+
+    <div id="real-content">
+        
+        <div class="apology-step active animate__animated animate__fadeIn" id="step1">
+            <span class="emoji-icon">😔</span>
+            <h2>Primero: Perdón</h2>
+            <p>Sé que anoche metí la pata. No fuimos a comer KFC como queríamos y te hice perder tiempo. Perdoon.</p>
+            <button class="btn btn-next" onclick="nextStep(2)">¿Me dejas explicarte?</button>
+        </div>
+
+        <div class="apology-step animate__animated animate__fadeIn" id="step2">
+            <span class="emoji-icon">🎲</span>
+            <h2>¿Qué pasó?</h2>
+            <p>Se me pasó el tiempo con los chicos jugando y charlando. Cuando les dije que me iba me dijeron de quedarme, pensé en invitarte <strong>no para cancelar nuestro plan</strong>, sino que vinieras con los chicos y jgaramosm, total podriamos ir otro dia a KFC.</p>
+            <p>Pensé: <em>"A Jazmín le encantan los juegos de mesa, la vamos a pasar BIEN"</em>. Pero no paso como esperaba. No sabia que tenias tanta hambre y qeu estabas eperandome.</p>
+            <button class="btn btn-next" onclick="nextStep(3)">Entiendo, ¿y ahora?</button>
+        </div>
+
+        <div class="apology-step animate__animated animate__fadeIn" id="step3">
+            <span class="emoji-icon">🍗</span>
+            <h2>La solución...</h2>
+            <p>No quería que te quedes con las ganas de tu KFC. Así que decidí traerte la promo yo mismo.</p>
+            <button class="btn btn-next" onclick="nextStep(4)">¡Muéstrame!</button>
+        </div>
+        
+        <div class="apology-step animate__animated animate__fadeIn" id="step4">
+            <span class="emoji-icon">🙏</span>
+            <h2>¿Me perdonas, gorda?</h2>
+            <p>La proxima ponemos bien una hora y la respeto sin importar.</p>
+            <div>
+                <button class="btn btn-next btn-forgive" onclick="startForgivenessLoop(true)">Sí, te perdono</button>
+                <button class="btn btn-next btn-not-yet" onclick="startForgivenessLoop(false)">Mmm, no sé...</button>
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="final-screen" class="animate__animated animate__zoomInDown">
+        <span class="emoji-icon">🎉🍔🍟</span>
+        <h1>¡EL DELIVERY ESTÁ AFUERA!</h1>
+        <p>Salí ya, que se enfría el KFC 🍟🛵</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // Variables para el control del flujo
+        let currentStep = 1;
+        let noCount = 0;
+        const maxNos = 8;
+        const noMessages = [
+            "¿Segura? ¡Pero si te traje tu KFC favorito! 🥺",
+            "¿De verdad? ¡Mira que se enfría! 🥶",
+            "¡Por favor! ¡Prometo compensarte con masajes! 💆‍♀️",
+            "¡Daleee! ¡No seas mala! 😭",
+            "¡Te quiero mucho! ¿Un poquito de perdón? 🤏",
+            "¡Haré lo que quieras! ¡Soy tu esclavo por una semana! 🧞‍♂️",
+            "¡Porfi porfi porfi! 🙏🙏🙏",
+            "¡Ya casi me perdonas, lo siento! 🥰"
+        ];
+
+        // Función para cambiar de paso en la disculpa
+        function nextStep(step) {
+            // Ocultar paso actual con animación de salida
+            const current = document.getElementById(`step${currentStep}`);
+            current.classList.remove('animate__fadeIn');
+            current.classList.add('animate__fadeOut');
+            
+            setTimeout(() => {
+                current.classList.remove('active', 'animate__fadeOut');
+                
+                // Mostrar siguiente paso con animación de entrada
+                const next = document.getElementById(`step${step}`);
+                next.classList.add('active', 'animate__fadeIn');
+                currentStep = step;
+            }, 500); // Esperar a que termine la animación de salida
+        }
+
+        // Lógica del botón de la promo falsa
+        document.getElementById('btn-claim').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Un momento...',
+                text: 'En realidad, esto no es un cupón de descuento.',
+                icon: 'info',
+                confirmButtonColor: '#E4002B',
+                confirmButtonText: '¿Entonces qué es?',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const fakePromo = document.getElementById('fake-promo');
+                    fakePromo.style.transform = 'translateY(-100%)'; 
+                    const realContent = document.getElementById('real-content');
+                    realContent.style.display = 'block';
+                }
+            });
+        });
+
+        // Lógica del bucle de perdón
+        function startForgivenessLoop(initialYes) {
+            if (initialYes) {
+                confirmForgiveness(1);
+            } else {
+                loopNo();
+            }
+        }
+
+        function loopNo() {
+            if (noCount < maxNos) {
+                Swal.fire({
+                    title: noMessages[noCount],
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#dc3545',
+                    confirmButtonText: 'Bueno, sí te perdono',
+                    cancelButtonText: 'Todavía no...',
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        confirmForgiveness(1);
+                    } else {
+                        noCount++;
+                        loopNo();
+                    }
+                });
+            } else {
+                // Después de 8 "no", forzamos el sí con humor
+                 Swal.fire({
+                    title: '¡Ya basta! ¡Me perdonas sí o sí! 😂',
+                    text: 'No acepto más un no por respuesta.',
+                    icon: 'warning',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: '¡Está bien, pesado! Te perdono.',
+                    allowOutsideClick: false
+                }).then(() => {
+                    confirmForgiveness(1);
+                });
+            }
+        }
+
+        // Lógica de las 3 reconfirmaciones
+        function confirmForgiveness(stage) {
+            let title, text, confirmBtn;
+            switch(stage) {
+                case 1:
+                    title = '¿De verdad de verdad? ¡Gracias! 😍';
+                    text = 'Me haces muy feliz.';
+                    confirmBtn = '¡Sí, en serio!';
+                    break;
+                case 2:
+                    title = '¿Segurísima? 💖';
+                    text = '¡No juegues con mis sentimientos!';
+                    confirmBtn = '¡Que sí, pesado!';
+                    break;
+                case 3:
+                    title = '¡Última vez! ¿Me perdonas al 100%? 💯';
+                    text = '¡Promesa de meñique!';
+                    confirmBtn = '¡SÍÍÍ, YA ESTÁ!';
+                    break;
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'success',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: confirmBtn,
+                allowOutsideClick: false
+            }).then(() => {
+                if (stage < 3) {
+                    confirmForgiveness(stage + 1);
+                } else {
+                    // Mostrar la pantalla final
+                    document.getElementById('real-content').style.display = 'none';
+                    document.getElementById('final-screen').style.display = 'flex';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
