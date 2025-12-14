@@ -2,180 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta property="og:title" content="¡Gran Apertura! DuoBox Recargado al 50% OFF 🍗">
-    <meta property="og:description" content="Promoción exclusiva de tiempo limitado. Hacé clic para canjear tu cupón de bienvenida en KFC.">
-    <meta property="og:image" content="https://www.kfc.com.ar/images/menues/1682022167DuoBox%20Recargado.jpg">
-    <meta property="og:url" content="https://kfc-promo-apertura.vercel.app">
-    <meta name="theme-color" content="#E4002B">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KFC | Promo Apertura 50% OFF</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    
     <style>
-        :root {
-            --kfc-red: #E4002B;
-            --kfc-dark: #202020;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            overflow-x: hidden;
-        }
-
-        /* --- Z-INDEX PARA QUE LA ALERTA FUNCIONE SIEMPRE --- */
-        div:where(.swal2-container) {
-            z-index: 20000 !important;
-        }
-
-        /* --- SECCIÓN 1: EL ENGAÑO (PROMO) --- */
-        #fake-promo {
-            height: 100vh;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 9999;
-            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
-        }
-
-        .brand-logo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 3rem;
-            color: var(--kfc-dark);
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-        }
-        
+        :root { --kfc-red: #E4002B; --kfc-dark: #202020; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; overflow-x: hidden; }
+        div:where(.swal2-container) { z-index: 20000 !important; }
+        #fake-promo { height: 100vh; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999; transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1); padding: 20px; }
+        .brand-logo { font-family: 'Oswald', sans-serif; font-size: 3rem; color: var(--kfc-dark); font-weight: 700; letter-spacing: -1px; margin-bottom: 20px; }
         .brand-logo span { color: var(--kfc-red); }
-
-        .promo-card {
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        .promo-img {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(228, 0, 43, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .btn-kfc {
-            background-color: var(--kfc-red);
-            color: white;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            border-radius: 50px;
-            border: none;
-            box-shadow: 0 5px 15px rgba(228, 0, 43, 0.4);
-            transition: all 0.3s ease;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        .btn-kfc:active { transform: scale(0.95); }
-
-        /* --- SECCIÓN 2: LA VERDAD (DISCULPA INTERACTIVA) --- */
-        #real-content {
-            display: none;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .apology-step {
-            display: none; /* Ocultos por defecto */
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .apology-step.active {
-            display: block;
-        }
-
+        .promo-card { padding: 20px; max-width: 500px; width: 100%; }
+        .promo-img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(228, 0, 43, 0.2); margin-bottom: 20px; }
+        #real-content { display: none; background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); min-height: 100vh; padding: 20px; flex-direction: column; justify-content: center; }
+        .apology-step { display: none; text-align: center; max-width: 600px; margin: 0 auto; padding: 20px; width: 100%; }
+        .apology-step.active { display: block; }
         .emoji-icon { font-size: 4rem; margin-bottom: 20px; display: block; }
-        
-        h2 { font-family: 'Oswald', sans-serif; color: var(--kfc-dark); font-size: 2rem; margin-bottom: 1.5rem; }
-        p { color: #555; line-height: 1.6; font-size: 1.2rem; margin-bottom: 2rem; }
-
-        .btn-next {
-            background-color: var(--kfc-red);
-            color: white;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            padding: 12px 30px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-next:hover { background-color: #c40025; }
-        
-        .btn-forgive {
-            background-color: #28a745; /* Verde para sí */
-        }
-        .btn-not-yet {
-            background-color: #dc3545; /* Rojo para no */
-            margin-left: 10px;
-        }
-
-        /* --- SECCIÓN 3: FINAL (DELIVERY) --- */
-        #final-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--kfc-red);
-            color: white;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 20001; /* Por encima de todo */
-        }
-        
-        #final-screen h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        #final-screen p {
-            font-size: 1.5rem;
-            color: rgba(255,255,255,0.8);
-        }
-
+        h2 { font-family: 'Oswald', sans-serif; color: var(--kfc-dark); font-size: 2rem; margin-bottom: 1rem; }
+        p { color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 2rem; }
+        .btn-kfc, .btn-next { background-color: var(--kfc-red); color: white; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.1rem; padding: 15px 30px; border-radius: 50px; border: none; width: 100%; max-width: 300px; margin: 5px 0; transition: transform 0.2s; cursor: pointer; }
+        .btn-kfc:active, .btn-next:active { transform: scale(0.98); }
+        .btn-container { display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; width: 100%; }
+        @media (min-width: 768px) { .btn-container { flex-direction: row; } }
+        .btn-forgive { background-color: #28a745; } .btn-not-yet { background-color: #dc3545; }
+        .btn-lunch { background-color: #E4002B; } .btn-dinner { background-color: #0d6efd; }
+        .final-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 20001; padding: 20px; }
+        #final-lunch { background: var(--kfc-red); color: white; }
+        #final-dinner { background: #1a1a2e; color: white; }
+        .final-screen h1 { font-family: 'Oswald', sans-serif; font-size: 3rem; margin-bottom: 20px; }
+        .couple-img { width: 100%; max-width: 400px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .btn-whatsapp { background-color: #25D366; color: white; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.1rem; padding: 15px 30px; border-radius: 50px; border: none; width: 100%; max-width: 300px; margin: 10px 0; transition: transform 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
+        .btn-whatsapp:hover { background-color: #1ebe57; color: white; }
+        .btn-whatsapp i { font-size: 1.5rem; }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
     <div id="fake-promo">
         <div class="brand-logo">KFC <span>PROMO</span></div>
         <div class="promo-card">
-            <img src="https://www.kfc.com.ar/images/menues/1682022167DuoBox%20Recargado.jpg" alt="KFC DuoBox" class="promo-img">
+            <img src="https://static.promodescuentos.com/threads/raw/eaHjT/935469_1/re/768x768/qt/60/935469_1.jpg" alt="KFC DuoBox" class="promo-img">
             <h1 class="h3 fw-bold mb-3">¡Felicidades! 🎉</h1>
             <p class="text-muted mb-4">Tenés un <strong>50% OFF</strong> en el nuevo DuoBox Recargado.</p>
             <button class="btn btn-kfc" id="btn-claim">CANJEAR AHORA</button>
@@ -183,182 +51,94 @@
         </div>
     </div>
 
-    <div id="real-content">
-        
+    <div id="real-content" style="display: none;">
         <div class="apology-step active animate__animated animate__fadeIn" id="step1">
             <span class="emoji-icon">😔</span>
             <h2>Primero: Perdón</h2>
-            <p>Sé que anoche metí la pata. No fuimos a comer KFC como queríamos y te hice perder tiempo. Perdoon.</p>
+            <p>Sé que anoche metí la pata. No fuimos a comer KFC como queríamos y te hice perder tiempo. Lo siento mucho.</p>
             <button class="btn btn-next" onclick="nextStep(2)">¿Me dejas explicarte?</button>
         </div>
-
         <div class="apology-step animate__animated animate__fadeIn" id="step2">
             <span class="emoji-icon">🎲</span>
             <h2>¿Qué pasó?</h2>
-            <p>Se me pasó el tiempo con los chicos jugando y charlando. Cuando les dije que me iba me dijeron de quedarme, pensé en invitarte <strong>no para cancelar nuestro plan</strong>, sino que vinieras con los chicos y jgaramosm, total podriamos ir otro dia a KFC.</p>
-            <p>Pensé: <em>"A Jazmín le encantan los juegos de mesa, la vamos a pasar BIEN"</em>. Pero no paso como esperaba. No sabia que tenias tanta hambre y qeu estabas eperandome.</p>
+            <p>Se me pasó el tiempo con los chicos. Cuando me dijeron de quedarme, pensé en invitarte <strong>no para cancelar nuestro plan</strong>, sino porque iban a jugar juegos de mesa. Pensé: <em>"A Jazmín le encantan los juegos de mesa, la vamos a pasar genial"</em>. Pero ejecuté mal y te hice enojar. Mala mía.</p>
             <button class="btn btn-next" onclick="nextStep(3)">Entiendo, ¿y ahora?</button>
         </div>
-
         <div class="apology-step animate__animated animate__fadeIn" id="step3">
             <span class="emoji-icon">🍗</span>
             <h2>La solución...</h2>
-            <p>No quería que te quedes con las ganas de tu KFC. Así que decidí traerte la promo yo mismo.</p>
-            <button class="btn btn-next" onclick="nextStep(4)">¡Muéstrame!</button>
+            <p>No quería que te quedes con las ganas de tu KFC. Pero quiero que elijas tú cómo arreglamos esto.</p>
+            <button class="btn btn-next" onclick="nextStep(4)">Ver propuesta</button>
         </div>
-        
         <div class="apology-step animate__animated animate__fadeIn" id="step4">
             <span class="emoji-icon">🙏</span>
-            <h2>¿Me perdonas, gorda?</h2>
-            <p>La proxima ponemos bien una hora y la respeto sin importar.</p>
-            <div>
+            <h2>¿Me perdonas, Jazmín?</h2>
+            <p>Te prometo que la próxima salida la planeamos juntos y sin fallos.</p>
+            <div class="btn-container">
                 <button class="btn btn-next btn-forgive" onclick="startForgivenessLoop(true)">Sí, te perdono</button>
                 <button class="btn btn-next btn-not-yet" onclick="startForgivenessLoop(false)">Mmm, no sé...</button>
             </div>
         </div>
-
+        <div class="apology-step animate__animated animate__fadeIn" id="step5">
+            <span class="emoji-icon">🤔❤️</span>
+            <h2>Para cerrar el trato...</h2>
+            <p>¿Qué preferís hacer ahora?</p>
+            <div class="btn-container">
+                <button class="btn btn-next btn-lunch" onclick="showFinal('lunch')">KFC para Almorzar YA 🍗</button>
+                <button class="btn btn-next btn-dinner" onclick="showFinal('dinner')">Cena Romántica esta Noche 🍷</button>
+            </div>
+        </div>
     </div>
     
-    <div id="final-screen" class="animate__animated animate__zoomInDown">
-        <span class="emoji-icon">🎉🍔🍟</span>
-        <h1>¡EL DELIVERY ESTÁ AFUERA!</h1>
-        <p>Salí ya, que se enfría el KFC 🍟🛵</p>
+    <div id="final-lunch" class="final-screen animate__animated animate__zoomInDown">
+        <span class="emoji-icon">🛵💨</span>
+        <h1>¡HECHO!</h1>
+        <p>Voy pidiendo el KFC ya mismo.</p>
+        <p class="mt-4"><strong>Prepárate que comemos rico.</strong></p>
+        <a href="#" class="btn btn-whatsapp" onclick="sendWhatsApp('lunch')"><i class="fab fa-whatsapp"></i> Confirmar por WhatsApp</a>
+    </div>
+
+    <div id="final-dinner" class="final-screen animate__animated animate__fadeInUp">
+        <h1 class="mb-4">SE REPITE ESTO</h1>
+        <img src="image.png" alt="Pareja con mascarillas" class="couple-img">
+        <p class="mt-4 mb-4" style="font-size: 1.3rem;">¿Qué vemos?</p>
+        <div class="btn-container">
+            <button class="btn btn-next" onclick="sendWhatsApp('dinner_pirates')">Seguimos viendo Piratas del Caribe 🏴‍☠️</button>
+            <button class="btn btn-next" onclick="sendWhatsApp('dinner_other')">Vemos otra peli que elijas vos 🎬</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
     <script>
-        // Variables para el control del flujo
-        let currentStep = 1;
-        let noCount = 0;
-        const maxNos = 8;
-        const noMessages = [
-            "¿Segura? ¡Pero si te traje tu KFC favorito! 🥺",
-            "¿De verdad? ¡Mira que se enfría! 🥶",
-            "¡Por favor! ¡Prometo compensarte con masajes! 💆‍♀️",
-            "¡Daleee! ¡No seas mala! 😭",
-            "¡Te quiero mucho! ¿Un poquito de perdón? 🤏",
-            "¡Haré lo que quieras! ¡Soy tu esclavo por una semana! 🧞‍♂️",
-            "¡Porfi porfi porfi! 🙏🙏🙏",
-            "¡Ya casi me perdonas, lo siento! 🥰"
-        ];
-
-        // Función para cambiar de paso en la disculpa
+        let currentStep = 1; let noCount = 0; const maxNos = 7;
+        const noMessages = ["¿Segura? ¡Mirá que tengo hambre! 🥺", "¿De verdad? ¡Pero si soy un amor! 🥶", "¡Por favor! ¡Prometo no mirar el reloj la próxima! 🕰️", "¡Daleee! ¡No seas mala! 😭", "¡Te quiero mucho! ¿Un poquito de perdón? 🤏", "¡Porfi porfi porfi! 🙏🙏🙏", "¡Ya casi me perdonas, lo siento! 🥰"];
         function nextStep(step) {
-            // Ocultar paso actual con animación de salida
             const current = document.getElementById(`step${currentStep}`);
-            current.classList.remove('animate__fadeIn');
-            current.classList.add('animate__fadeOut');
-            
-            setTimeout(() => {
-                current.classList.remove('active', 'animate__fadeOut');
-                
-                // Mostrar siguiente paso con animación de entrada
-                const next = document.getElementById(`step${step}`);
-                next.classList.add('active', 'animate__fadeIn');
-                currentStep = step;
-            }, 500); // Esperar a que termine la animación de salida
+            current.classList.remove('animate__fadeIn'); current.classList.add('animate__fadeOut');
+            setTimeout(() => { current.classList.remove('active', 'animate__fadeOut'); const next = document.getElementById(`step${step}`); next.classList.add('active', 'animate__fadeIn'); currentStep = step; }, 500);
         }
-
-        // Lógica del botón de la promo falsa
         document.getElementById('btn-claim').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Un momento...',
-                text: 'En realidad, esto no es un cupón de descuento.',
-                icon: 'info',
-                confirmButtonColor: '#E4002B',
-                confirmButtonText: '¿Entonces qué es?',
-                allowOutsideClick: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const fakePromo = document.getElementById('fake-promo');
-                    fakePromo.style.transform = 'translateY(-100%)'; 
-                    const realContent = document.getElementById('real-content');
-                    realContent.style.display = 'block';
-                }
+            Swal.fire({ title: 'Un momento...', text: 'En realidad, esto no es un cupón de descuento.', icon: 'info', confirmButtonColor: '#E4002B', confirmButtonText: '¿Entonces qué es?', allowOutsideClick: false }).then((result) => {
+                if (result.isConfirmed) { document.getElementById('fake-promo').style.transform = 'translateY(-100%)'; const content = document.getElementById('real-content'); content.style.display = 'flex'; }
             });
         });
-
-        // Lógica del bucle de perdón
-        function startForgivenessLoop(initialYes) {
-            if (initialYes) {
-                confirmForgiveness(1);
-            } else {
-                loopNo();
-            }
-        }
-
+        function startForgivenessLoop(initialYes) { if (initialYes) confirmForgiveness(1); else loopNo(); }
         function loopNo() {
-            if (noCount < maxNos) {
-                Swal.fire({
-                    title: noMessages[noCount],
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#28a745',
-                    cancelButtonColor: '#dc3545',
-                    confirmButtonText: 'Bueno, sí te perdono',
-                    cancelButtonText: 'Todavía no...',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        confirmForgiveness(1);
-                    } else {
-                        noCount++;
-                        loopNo();
-                    }
-                });
-            } else {
-                // Después de 8 "no", forzamos el sí con humor
-                 Swal.fire({
-                    title: '¡Ya basta! ¡Me perdonas sí o sí! 😂',
-                    text: 'No acepto más un no por respuesta.',
-                    icon: 'warning',
-                    confirmButtonColor: '#28a745',
-                    confirmButtonText: '¡Está bien, pesado! Te perdono.',
-                    allowOutsideClick: false
-                }).then(() => {
-                    confirmForgiveness(1);
-                });
-            }
+            if (noCount < maxNos) { Swal.fire({ title: noMessages[noCount], icon: 'question', showCancelButton: true, confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545', confirmButtonText: 'Bueno, sí te perdono', cancelButtonText: 'Todavía no...', allowOutsideClick: false }).then((result) => { if (result.isConfirmed) confirmForgiveness(1); else { noCount++; loopNo(); } }); }
+            else { Swal.fire({ title: '¡Ya basta! ¡Me perdonas sí o sí! 😂', icon: 'warning', confirmButtonColor: '#28a745', confirmButtonText: '¡Está bien, pesado! Te perdono.' }).then(() => confirmForgiveness(1)); }
         }
-
-        // Lógica de las 3 reconfirmaciones
         function confirmForgiveness(stage) {
             let title, text, confirmBtn;
-            switch(stage) {
-                case 1:
-                    title = '¿De verdad de verdad? ¡Gracias! 😍';
-                    text = 'Me haces muy feliz.';
-                    confirmBtn = '¡Sí, en serio!';
-                    break;
-                case 2:
-                    title = '¿Segurísima? 💖';
-                    text = '¡No juegues con mis sentimientos!';
-                    confirmBtn = '¡Que sí, pesado!';
-                    break;
-                case 3:
-                    title = '¡Última vez! ¿Me perdonas al 100%? 💯';
-                    text = '¡Promesa de meñique!';
-                    confirmBtn = '¡SÍÍÍ, YA ESTÁ!';
-                    break;
-            }
-
-            Swal.fire({
-                title: title,
-                text: text,
-                icon: 'success',
-                confirmButtonColor: '#28a745',
-                confirmButtonText: confirmBtn,
-                allowOutsideClick: false
-            }).then(() => {
-                if (stage < 3) {
-                    confirmForgiveness(stage + 1);
-                } else {
-                    // Mostrar la pantalla final
-                    document.getElementById('real-content').style.display = 'none';
-                    document.getElementById('final-screen').style.display = 'flex';
-                }
-            });
+            if(stage === 1) { title = '¿De verdad? 😍'; text = 'Me haces feliz.'; confirmBtn = '¡Sí!'; } else if(stage === 2) { title = '¿Segurísima? 💖'; text = '¡No juegues conmigo!'; confirmBtn = '¡Que sí!'; } else { title = '¡Promesa de meñique! 🤙'; text = '¿Estamos bien?'; confirmBtn = '¡SÍ, AVANZA!'; }
+            Swal.fire({ title: title, text: text, icon: 'success', confirmButtonColor: '#28a745', confirmButtonText: confirmBtn, allowOutsideClick: false }).then(() => { if (stage < 3) confirmForgiveness(stage + 1); else nextStep(5); });
+        }
+        function showFinal(choice) { document.getElementById('real-content').style.display = 'none'; document.getElementById(`final-${choice}`).style.display = 'flex'; }
+        function sendWhatsApp(type) {
+            let message = "";
+            if (type === 'lunch') { message = "¡Hola! Ya vi tu página. Te perdono y quiero el KFC para almorzar ahora. 🍗🛵"; }
+            else if (type === 'dinner_pirates') { message = "¡Hola! Te perdono. Esta noche se repite la foto de las mascarillas y seguimos viendo Piratas del Caribe. 🏴‍☠️🎬"; }
+            else if (type === 'dinner_other') { message = "¡Hola! Te perdono. Esta noche se repite la foto de las mascarillas, pero yo elijo la peli. 🎬🍿"; }
+            window.location.href = `https://wa.me/3516121498?text=${encodeURIComponent(message)}`;
         }
     </script>
 </body>
